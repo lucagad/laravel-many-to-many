@@ -63,6 +63,12 @@
   {{ $posts->links() }}
 
   <div class="categories my-5">
+
+    @if(session('category_deleted'))
+      <div class=" my-2 alert alert-success" role="alert">
+        {{ session('category_deleted') }}
+      </div>
+  @endif
     
     <section class="d-flex justify-content-between align-items-center">
       <h2>Categorie</h2>
@@ -81,7 +87,19 @@
                 {{$category->name}}
               </button>
             </h5>
-            <a class="btn btn-secondary" href="{{ route('admin.categories.edit', $category) }}">MODIFICA NOME</a>
+
+            <div class="button_box">
+              <a class="btn btn-secondary" href="{{ route('admin.categories.edit', $category) }}">MODIFICA</a>
+
+              <form class="d-inline"
+                    onsubmit= "return confirm('Vuoi eliminare definitivamente la categoria ## {{ $category->name }} ## ?')"
+                    action="{{ route('admin.categories.destroy', $category) }}" method="POST">
+                    
+                    @csrf
+                    @method ('DELETE')
+                    <button class="btn btn-danger">ELIMINA</button>
+              </form>
+            </div>
           </div>
 
           <div id="category-{{$category->id}}" class="collapse hide" aria-labelledby="headingOne" data-parent="#accordion">

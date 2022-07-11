@@ -43,13 +43,7 @@
                     <button type="submit" class="btn btn-success">SALVA</button>
                 </form>
 
-                <form class = "d-inline"
-                        onsubmit = "return confirm('Vuoi eliminare definitivamente la categoria ## {{ $category->name }} ## ?')"
-                        action = "{{ route('admin.categories.destroy', $category) }}" method="POST">
-                    @csrf
-                    @method ('DELETE')
-                    <button class="btn btn-danger">ELIMINA</button>
-                </form>
+                
             </div>
         </div>
 

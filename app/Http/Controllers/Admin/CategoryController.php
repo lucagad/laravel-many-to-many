@@ -102,7 +102,7 @@ class CategoryController extends Controller
 
         $category->delete();
 
-        return redirect()->route('admin.posts.index')->with('post_deleted', "La Categoria ## $category->name ##  è stata cancellata correttamente.");
+        return redirect()->route('admin.posts.index')->with('category_deleted', "La Categoria ## $category->name ##  è stata cancellata correttamente.");
 
     }
 
