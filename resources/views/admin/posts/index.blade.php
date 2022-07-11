@@ -5,7 +5,7 @@
 
   <section class="d-flex justify-content-between align-items-center">
     <h1 class="d-inline">Lista dei Post</h1>
-    <a class="btn btn-success" href="{{ route('admin.posts.create') }}">CREA</a>
+    <a class="btn btn-success" href="{{ route('admin.posts.create') }}">CREA POST</a>
   </section>
 
   @if(session('post_deleted'))
@@ -30,11 +30,11 @@
       <tr>
         <td>{{ $post->id }}</td>
         <td>{{ $post->title }}</td>
-        <td>{{ $post->category ? $post->category->name : '-' }}</td>
+        <td> <span class="badge badge-primary p-1">{{ $post->category ? $post->category->name : '-' }}</span></td>
 
         <td>
         @forelse ( $post->tags as $tag )
-          <span class="badge badge-info p-1">{{ $tag->name }}</span>
+          <span class="badge badge-secondary p-1">{{ $tag->name }}</span>
         @empty
           -
         @endforelse
@@ -72,7 +72,7 @@
     
     <section class="d-flex justify-content-between align-items-center">
       <h2>Categorie</h2>
-      <a class="btn btn-success" href="{{ route('admin.categories.create') }}">CREA CATEGORIA</a>
+      <a class="btn btn-warning" href="{{ route('admin.categories.create') }}">CREA CATEGORIA</a>
     </section>
 
     <div class="my-3" id="accordion">
