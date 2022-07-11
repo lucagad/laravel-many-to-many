@@ -19,6 +19,14 @@
           <div class="col-8 col-lg-10 d-flex flex-column justify-content-center align-items-start">
               <h5>Titolo: {{ $post->title }}</h5>
               <h5>Categoria: {{ $post->category ? $post->category->name : ' - ' }}</h5>
+              <div class="tags">
+                <h5 class="mb-3 d-inline" >Tags: </h5>
+                @forelse ( $post->tags as $tag )
+                  <span class="badge badge-info p-1">{{ $tag->name }}</span>
+                @empty
+                  -
+                @endforelse
+              </div>
               <p class="my-2 p-1 rounded">{{ $post->content }}</p>
           </div>
 
