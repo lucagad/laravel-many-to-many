@@ -64,7 +64,7 @@
                                 name="category_id" 
                                 class="form-control @error('content') is-invalid @enderror">
                             
-                                <option value="NULL" selected>Seleziona la Categoria</option>
+                                <option value="" selected>Seleziona la Categoria</option>
 
                                 @foreach ($categories as $category )
                                     <option @if ($category->id == old ('category_id')) selected @endif value="{{$category->id}}" >{{$category->name}}</option>
@@ -72,24 +72,26 @@
 
                             </select>
 
-                        @error('type')
+                        @error('category_id')
                             <div class="invalid-feedback">{{$message}}</div>
                         @enderror
 
                     </div>
 
-                    {{-- <div class="mb-3">
-                        <label for="image" class="form-label">URL Image</label>
-                        <input type="text" 
-                                id="image" 
-                                name="image" 
-                                class="form-control @error('image') is-invalid @enderror"
-                                placeholder="URL Image"
-                                value="{{old('image')}}" >
-                        @error('image')
-                            <div class="invalid-feedback">{{$message}}</div>
-                        @enderror
-                    </div> --}}
+                    <div class="mb-3">
+                        
+                        <label for="tags_id" class="form-label">Tags del Post: </label>
+
+                        @foreach ($tags as $tag)
+                            <input type="checkbox"
+                                name="tags[]"
+                                id="tag({$loop->iteration}}"
+                                @if(in_array($tag->id, old('tags',[]))) checked @endif
+                                value="{{ $tag->id }}">
+                            <label class="mr-3" for="tag{{$loop->iteration}}">{{$tag->name}}</label>
+                        @endforeach
+                        
+                    </div>
 
                     <button type="submit" class="btn btn-success">SALVA</button>
                 </form>

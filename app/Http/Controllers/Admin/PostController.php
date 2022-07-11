@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 
 Use App\Post;
 Use App\Category;
+Use App\Tag;
 
 class PostController extends Controller
 {
@@ -31,8 +32,9 @@ class PostController extends Controller
     public function create()
     {
         $categories = Category::all();
+        $tags = Tag::all();
 
-        return view('admin.posts.create', compact ('categories'));
+        return view('admin.posts.create', compact ('categories','tags'));
     }
 
     /**
@@ -49,7 +51,12 @@ class PostController extends Controller
         $data['slug'] = $this->createSlug($data['title']);
 
         $new_post->fill($data);
+        
         $new_post->save();
+
+        foreach ($data['tags'] as $tag) {
+            $new_post->tags()->attach($tag);
+        }
 
         return redirect()->route('admin.posts.show', $new_post);
     }
