@@ -54,8 +54,12 @@ class PostController extends Controller
         
         $new_post->save();
 
-        foreach ($data['tags'] as $tag) {
-            $new_post->tags()->attach($tag);
+        // dd($data);
+
+        if(array_key_exists('tags',$data)){
+            foreach ($data['tags'] as $tag) {
+                $new_post->tags()->attach($tag);
+            }
         }
 
         return redirect()->route('admin.posts.show', $new_post);
@@ -84,11 +88,12 @@ class PostController extends Controller
     {
 
         $categories = Category::all();
+        $tags = Tag::all();
         $post = Post::find($id);
         
         if($post){
 
-            return view('admin.posts.edit', compact('post','categories'));
+            return view('admin.posts.edit', compact('post','categories','tags'));
 
         } else { abort(404, 'Post not present in the database');}
     }
@@ -102,20 +107,23 @@ class PostController extends Controller
      */
     public function update(PostsRequest $request, Post $post)
     {
-        
         $new_data = $request->all();
 
         if($post->title != $new_data['title']){
-
             $new_data['slug'] = $this->createSlug($new_data['title']);
-
-        }else{
-
+        } else{
             $new_data['slug'] = $post->slug;
-            
         }
 
         $post->update($new_data);
+
+        if(array_key_exists('tags',$new_data)){
+            // se esiste l'array tags lo uso per sincronizzare i dati della tabella ponte
+            $post->tags()->sync($new_data['tags']);
+        } else {
+            // se non esiste la chiave vuol dire che devo cancellare tutte le relazioni eventualmente presenti
+            $post->tags()->detach();
+        }
 
         return redirect()->route('admin.posts.show', $post);
     }
@@ -127,7 +135,8 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(Post $post)
-    {
+    {   
+        $post->tags()->detach();
         $post->delete();
 
         return redirect()->route('admin.posts.index')->with('post_deleted', "Il post ## $post->title ##  è stato cancellato correttamente.");

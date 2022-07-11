@@ -96,6 +96,14 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         
+        foreach ($category->posts as $post) {
+            $post->update(['category_id' => null]);
+        }
+
+        $category->delete();
+
+        return redirect()->route('admin.posts.index')->with('post_deleted', "La Categoria ## $category->name ##  è stata cancellata correttamente.");
+
     }
 
     private function createSlug ($string) {

@@ -69,12 +69,7 @@
                                 @foreach ($categories as $category )
                                     <option @if ($category->id == old ('category_id')) selected @endif value="{{$category->id}}" >{{$category->name}}</option>
                                 @endforeach
-
-                            </select>
-
-                        @error('category_id')
-                            <div class="invalid-feedback">{{$message}}</div>
-                        @enderror
+                        </select>
 
                     </div>
 

@@ -7,6 +7,7 @@
                 
 
                 {{-- Preview post selezionato --}}
+                
                 <section class = "d-flex justify-content-between align-items-center">
 
                     <h2 class="mb-3 d-inline">Post selezionato</h2>
@@ -101,6 +102,29 @@
                             <div class="invalid-feedback">{{$message}}</div>
                         @enderror
 
+                    </div>
+
+                    <div class="mb-3">
+                        
+                        <label for="tags_id" class="form-label">Tags del Post: </label>
+
+                        @foreach ($tags as $tag)
+                            <input type="checkbox"
+                                name="tags[]"
+                                id="tag{{$loop->iteration}}"
+                                {{-- al orimo caricamento non ci sono errorin --}}
+                                {{-- quindi stampo checked se $tag->id corrisponde --}}
+                                @if(!$errors->any() && $post->tags->contains($tag->id))
+                                    checked
+                                @elseif ($errors->any () && in_array($tag->id, old('tags', []) ))
+                                {{-- se ci sono errori stampo la corrispondenza in old()--}}
+                                    checked
+                                @endif
+                                
+                                value="{{ $tag->id }}">
+                                    <label class="mr-3'" for="tag{{$loop->iteration}}">{{$tag->name}}</label>
+                                @endforeach
+                        
                     </div>
 
                     <button type="submit" class="btn btn-success">SALVA</button>
